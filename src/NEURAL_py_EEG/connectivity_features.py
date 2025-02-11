@@ -750,7 +750,10 @@ def main_connectivity(x, Fs, feat_name, ch_labels, params=None):
         iright = 1
         ipairs = np.array([1, 2])
 
-    if ipairs.shape[1] == 0:
+    try:
+        if ipairs.shape[1] == 0:
+            return np.array([np.nan, np.nan, np.nan, np.nan])
+    except IndexError:
         return np.array([np.nan, np.nan, np.nan, np.nan])
     try:
         if (
@@ -785,6 +788,8 @@ def main_connectivity(x, Fs, feat_name, ch_labels, params=None):
                 feat_name,
             )
     except:
-        raise ValueError("Feature function not found: %s" % feat_name)
+        # raise ValueError("Feature function not found: %s" % feat_name)
+        warnings.warn("Feature function not found: %s" % feat_name)
+        featx = np.nan
 
     return featx
